@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
 function SignUp() {
   const [formData,setFormData] = useState({});
-
+  const navigate = useNavigate();
   const handleChange = (e) =>{
        setFormData({...formData , [e.target.id]:e.target.value })
   }
@@ -15,6 +15,7 @@ function SignUp() {
       const res = await axios.post('/api/auth/signup', formData);
       // Handle the response as needed
       console.log(res.data); // Assuming you want to log the response data
+      navigate('/sign-in')
     } catch (error) {
       // Handle errors
       console.error('Error submitting the form:', error);
