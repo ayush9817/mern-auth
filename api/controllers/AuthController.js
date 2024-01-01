@@ -49,3 +49,27 @@ console.log("hi")
       res.status(500).json(error.message);
    }
 }
+
+export const google = async (req,res) =>{
+   const {email,name,photo} = req.body;
+   try {
+      const valid = await user.findOne({email});
+      
+      if(valid){
+      const token = jwt.sign({id:valid._id},process.env.JWT);
+      //const token = jwt.sign({id:valid._id},process.env.JWT);
+      const {password:hpassword,...rest} = valid._doc;
+      const expiryDate = new Date(Date.now()+3600000);
+      res.cookie("acesstoken",token,{httpOnly:true,expires:expiryDate}).status(200).json(rest);
+      }
+      else{
+        const generatePassword = Math.random().toString(36).slice(-8);
+        const hpassword = bcryptjs.hashSync(generatePassword,10);
+        const newUser = new user({username:name,email,password:hpassword,profilePicture:photo});
+
+      }
+   }
+   catch(err){
+      console.log(err);
+   }
+}
