@@ -66,6 +66,13 @@ export const google = async (req,res) =>{
         const generatePassword = Math.random().toString(36).slice(-8);
         const hpassword = bcryptjs.hashSync(generatePassword,10);
         const newUser = new user({username:name,email,password:hpassword,profilePicture:photo});
+        
+
+        const user2 = await newUser.save();
+        const token = jwt.sign({id:user2._id},process.env.JWT);
+        const {password:hpassword2,...rest} = user2._doc;
+        const expiryDate = new Date(Date.now()+3600000);
+        res.cookie("acesstoken",token,{httpOnly:true,expires:expiryDate}).status(200).json(rest);
 
       }
    }
