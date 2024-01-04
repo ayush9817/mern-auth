@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import urouter from './route/UserRoute.js';
 import arouter from './route/AuthRoute.js';
+import cookieParser from 'cookie-parser';
 
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.listen(3000,()=>{
 })  
 
 app.use(express.json());
+app.use(cookieParser());
 
 
 app.use("/api/user",urouter)
