@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import urouter from './route/UserRoute.js';
 import arouter from './route/AuthRoute.js';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 
 dotenv.config();
@@ -11,7 +12,14 @@ dotenv.config();
 
 
 
+
 const app = express();
+
+const __dirname = path.resolve();
+
+
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
 
 mongoose.connect(process.env.MONGO).then(()=>{
     console.log("connected to mongodb");
